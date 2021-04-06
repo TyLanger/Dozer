@@ -5,35 +5,66 @@ using UnityEngine;
 public class BeanSpawner : MonoBehaviour
 {
     public GameObject beanPrefab;
-    
+    // How do I make a pool?
+    // queue of idle beans
+    // when a bean falls off, add it to the idle queue
+    // if the queue count > 0, grab from there instead of Instantiate?
+    // I might not make enough beans quick enough to warrant it
 
-    public int numBeans;
-    public int startingBeanCount;
+    float minBurstSpacing = 0.2f;
+    float maxBurstSpacing = 0.8f;
 
-    public float burstSpacing;
+    float minTrickleSpacing = 2;
+    float maxTrickleSpacing = 4;
+
+    int minBurstSize = 16;
+    int maxBurstSize = 30;
+
+    int minTrickleSize = 4;
+    int maxTrickleSize = 8;
 
     // Start is called before the first frame update
     void Start()
     {
-        // spawn a bunch of beans
-        StartCoroutine(SpawnBeanBurst());
+
+
+        StartCoroutine(AlternateSpawns());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator AlternateSpawns()
     {
-        
+        // burst
+        yield return StartCoroutine(SpawnBeansOverTime(GetRandom(minBurstSize, maxBurstSize), GetRandom(minBurstSpacing, maxBurstSpacing)));
+
+        // trickle
+        yield return StartCoroutine(SpawnBeansOverTime(GetRandom(minTrickleSize, maxTrickleSize), GetRandom(minTrickleSpacing, maxTrickleSpacing)));
+
+        // repeat
+        StartCoroutine(AlternateSpawns());
     }
 
-    IEnumerator SpawnBeanBurst()
+    IEnumerator SpawnBeansOverTime(int beansToSpawn, float timeBetweenBeans)
     {
-        // spawn a bunch of beans, one after another
-        // quickly, just enough time to fall out of the way
-        for (int i = 0; i < startingBeanCount; i++)
+        for (int i = 0; i < beansToSpawn; i++)
         {
             // randomize rotation someday
             Instantiate(beanPrefab, transform.position, transform.rotation, transform);
-            yield return new WaitForSeconds(burstSpacing);
+            yield return new WaitForSeconds(timeBetweenBeans);
         }
+    }
+
+    float GetRandom(float min, float max)
+    {
+        // gives a distibution like summing 2 dice
+        float r1 = Random.Range(min / 2, max / 2);
+        float r2 = Random.Range(min / 2, max / 2);
+        return r1 + r2;
+    }
+
+    int GetRandom(int min, int max)
+    {
+        int r1 = Random.Range(min / 2, max / 2);
+        int r2 = Random.Range(min / 2, max / 2);
+        return r1 + r2;
     }
 }
