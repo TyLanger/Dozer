@@ -10,6 +10,7 @@ public class BeanSpawner : MonoBehaviour
     // when a bean falls off, add it to the idle queue
     // if the queue count > 0, grab from there instead of Instantiate?
     // I might not make enough beans quick enough to warrant it
+    Queue<GameObject> standbyQueue;
 
     float minBurstSpacing = 0.2f;
     float maxBurstSpacing = 0.8f;
@@ -29,7 +30,7 @@ public class BeanSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        standbyQueue = new Queue<GameObject>(100);
 
         StartCoroutine(AlternateSpawns());
     }
@@ -58,8 +59,34 @@ public class BeanSpawner : MonoBehaviour
 
     void SpawnBean()
     {
-        GameObject copy = Instantiate(beanPrefab, transform.position, transform.rotation, transform);
-        copy.transform.localScale = Vector3.one * Random.Range(minBeanScale, maxBeanScale);
+        GameObject copy;
+        if (standbyQueue.Count == 0)
+        {
+            copy = Instantiate(beanPrefab, transform.position, transform.rotation, transform);
+            copy.transform.localScale = Vector3.one * Random.Range(minBeanScale, maxBeanScale);
+        }
+        else
+        {
+            copy = standbyQueue.Dequeue();
+            copy.transform.position = transform.position;
+            //Debug.Log("Used from queue");
+        }
+        
+
+        BeanCleanup script = copy.GetComponent<BeanCleanup>();
+        script.OnLeaveWorld -= BeanLeftWorld;
+        script.OnLeaveWorld += BeanLeftWorld;
+        script.StartPhysics();
+    }
+
+    void BeanLeftWorld(GameObject bean)
+    {
+        // add to standby queue
+        standbyQueue.Enqueue(bean);
+        bean.transform.position = new Vector3(0, 0, -50); // off screen
+        //BeanCleanup script = bean.GetComponent<BeanCleanup>();
+        //Debug.Log("Put bean away");
+        
     }
 
     float GetRandom(float min, float max)

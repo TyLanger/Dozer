@@ -27,6 +27,9 @@ public class Bulldozer : MonoBehaviour
     Vector3 cabOffset;
     Rigidbody cabBody;
 
+    float minParentScale = 0.3f;
+    float maxParentScale = 0.6f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +58,20 @@ public class Bulldozer : MonoBehaviour
         {
             ToggleSpeed();
         }
+        if(Input.GetButtonDown("Jump"))
+        {
+            // grow
+            leftTread.gameObject.SetActive(false);
+            rightTread.gameObject.SetActive(false);
+
+            transform.position = transform.position + Vector3.up;
+            transform.localScale = Vector3.one * maxParentScale;
+            cabOffset = new Vector3(cabOffset.x, cabOffset.y * (maxParentScale/minParentScale), cabOffset.z);
+            // this breaks the reset.
+
+            leftTread.gameObject.SetActive(true);
+            rightTread.gameObject.SetActive(true);
+        }
     }
 
     private void FixedUpdate()
@@ -75,6 +92,7 @@ public class Bulldozer : MonoBehaviour
         
         cabBody.MovePosition((leftTread.position + rightTread.position) / 2 + cabOffset);
         cabBody.MoveRotation(leftTread.rotation);
+
     }
 
     private void Reset()
