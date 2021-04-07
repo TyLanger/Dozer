@@ -23,6 +23,9 @@ public class BeanSpawner : MonoBehaviour
     int minTrickleSize = 4;
     int maxTrickleSize = 8;
 
+    float minBeanScale = 0.1f;
+    float maxBeanScale = 0.2f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,9 +51,15 @@ public class BeanSpawner : MonoBehaviour
         for (int i = 0; i < beansToSpawn; i++)
         {
             // randomize rotation someday
-            Instantiate(beanPrefab, transform.position, transform.rotation, transform);
+            SpawnBean();
             yield return new WaitForSeconds(timeBetweenBeans);
         }
+    }
+
+    void SpawnBean()
+    {
+        GameObject copy = Instantiate(beanPrefab, transform.position, transform.rotation, transform);
+        copy.transform.localScale = Vector3.one * Random.Range(minBeanScale, maxBeanScale);
     }
 
     float GetRandom(float min, float max)

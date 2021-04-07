@@ -13,7 +13,6 @@ public class CameraController : MonoBehaviour
     public Vector3 posOffset;
     public float viewAngle = 45;
 
-    public Transform debugLookPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +28,9 @@ public class CameraController : MonoBehaviour
         // should be the center of the screen
         Vector3 focusPoint = jarAnchor.position + anchorToDozerRay.normalized * Mathf.Clamp(anchorToDozerRay.magnitude, minFocusLength, maxFocusLength);
 
-        debugLookPoint.position = focusPoint;
-        debugLookPoint.right = anchorToDozerRay.normalized;
+        //debugLookPoint.position = focusPoint;
+        //debugLookPoint.right = anchorToDozerRay.normalized;
+        
         //debugLookPoint.forward = jarAnchor.position + anchorToDozerRay.normalized * focusLength - debugLookPoint.position;
 
         //transform.position = Vector3.Lerp(transform.position, focusPoint + posOffset, Time.deltaTime);
