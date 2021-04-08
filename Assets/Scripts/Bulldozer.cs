@@ -8,6 +8,12 @@ public class Bulldozer : MonoBehaviour
     public Rigidbody leftTread;
     public Rigidbody rightTread;
 
+    public GameObject leftPlow;
+    public GameObject leftPlowBig;
+    public GameObject rightPlow;
+    public GameObject rightPlowBig;
+
+
     public float speed;
     public float turnSpeed;
     public float fastSpeed;
@@ -29,6 +35,10 @@ public class Bulldozer : MonoBehaviour
 
     float minParentScale = 0.3f;
     float maxParentScale = 0.6f;
+
+    int goldenBeans = 0;
+
+    bool hornUnlocked = false;
 
     // Start is called before the first frame update
     void Start()
@@ -56,21 +66,15 @@ public class Bulldozer : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.F))
         {
-            ToggleSpeed();
+            //ToggleSpeed();
         }
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetKeyDown(KeyCode.H))
         {
-            // grow
-            leftTread.gameObject.SetActive(false);
-            rightTread.gameObject.SetActive(false);
-
-            transform.position = transform.position + Vector3.up;
-            transform.localScale = Vector3.one * maxParentScale;
-            cabOffset = new Vector3(cabOffset.x, cabOffset.y * (maxParentScale/minParentScale), cabOffset.z);
-            // this breaks the reset.
-
-            leftTread.gameObject.SetActive(true);
-            rightTread.gameObject.SetActive(true);
+            Honk();
+        }
+        if (Input.GetButtonDown("Jump"))
+        {
+            
         }
     }
 
@@ -113,7 +117,17 @@ public class Bulldozer : MonoBehaviour
 
     }
 
-    void ToggleSpeed()
+    public void PayCost(int price)
+    {
+        goldenBeans -= price;
+    }
+
+    public bool InDebt()
+    {
+        return goldenBeans < 0;
+    }
+
+    public void ToggleSpeed()
     {
         slowSpeed = !slowSpeed;
         if(slowSpeed)
@@ -126,6 +140,42 @@ public class Bulldozer : MonoBehaviour
             // would like to make some force so you are blown back by the speed a bit
             currentSpeed = fastSpeed;
             currentTurnSpeed = fastTurnSpeed;
+        }
+    }
+
+    public void MaxSize()
+    {
+        leftTread.gameObject.SetActive(false);
+        rightTread.gameObject.SetActive(false);
+
+        transform.position = transform.position + Vector3.up;
+        transform.localScale = Vector3.one * maxParentScale;
+        cabOffset = new Vector3(cabOffset.x, cabOffset.y * (maxParentScale / minParentScale), cabOffset.z);
+
+        leftTread.gameObject.SetActive(true);
+        rightTread.gameObject.SetActive(true);
+    }
+
+    public void BigPlow()
+    {
+        /*
+        leftPlow.SetActive(false);
+        rightPlow.SetActive(false);
+        leftPlowBig.SetActive(true);
+        rightPlowBig.SetActive(true);
+        */
+    }
+
+    public void UnlockHorn()
+    {
+        hornUnlocked = true;
+    }
+
+    void Honk()
+    {
+        if(hornUnlocked)
+        {
+            // sound and a shockwave in front of you
         }
     }
 }
