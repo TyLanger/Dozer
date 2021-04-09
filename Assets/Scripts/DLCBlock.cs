@@ -41,14 +41,15 @@ public class DLCBlock : MonoBehaviour
             // bad is 270
             // wiggle a bit and you hit 360
             float angle = transform.rotation.eulerAngles.x;
-            if (angle > 80 && angle < 100)
+            // +- 15 degrees
+            if (angle > 75 && angle < 105)
             {
                 // good
                 bought = true;
                 //Debug.Log($"Paid front price for {gameObject.name}");
                 Purchase(price);
             }
-            else if(angle > 260 && angle < 280)
+            else if(angle > 255 && angle < 285)
             {
                 bought = true;
                 //Debug.Log($"Paid back price for {gameObject.name}");

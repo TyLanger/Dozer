@@ -108,9 +108,15 @@ public class Bulldozer : MonoBehaviour
         currentFuelSeconds -= Mathf.Max(Mathf.Abs(forwardInput), Mathf.Abs(horInput)) * Time.fixedDeltaTime;
         currentFuelSeconds -= idleFuelConsumptionScale * Time.fixedDeltaTime; // lose a little fuel anyway
 
-        if(currentFuelSeconds < 0)
+        currentFuelSeconds = Mathf.Max(0, currentFuelSeconds);
+
+        if(currentFuelSeconds > 0)
         {
-            // explode
+            SetFastSpeed();
+        }
+        else
+        {
+            SetSlowSpeed();
         }
     }
 
@@ -137,6 +143,11 @@ public class Bulldozer : MonoBehaviour
 
     }
 
+    public float GetFuelPercent()
+    {
+        return currentFuelSeconds / maxFuelSeconds;
+    }
+
     public void SetNewSpawn()
     {
         useNewSpawn = true;
@@ -152,8 +163,21 @@ public class Bulldozer : MonoBehaviour
         return goldenBeans < 0;
     }
 
+    void SetSlowSpeed()
+    {
+        currentSpeed = speed;
+        currentTurnSpeed = turnSpeed;
+    }
+
+    void SetFastSpeed()
+    {
+        currentSpeed = fastSpeed;
+        currentTurnSpeed = fastTurnSpeed;
+    }
+
     public void ToggleSpeed()
     {
+        // used to have a button to be able to toggle speeds
         slowSpeed = !slowSpeed;
         if(slowSpeed)
         {

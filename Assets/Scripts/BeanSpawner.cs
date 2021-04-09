@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class BeanSpawner : MonoBehaviour
     // when a bean falls off, add it to the idle queue
     // if the queue count > 0, grab from there instead of Instantiate?
     // I might not make enough beans quick enough to warrant it
-    Queue<GameObject> standbyQueue;
+    static Queue<GameObject> standbyQueue;
 
     float minBurstSpacing = 0.2f;
     float maxBurstSpacing = 0.8f;
@@ -27,11 +28,19 @@ public class BeanSpawner : MonoBehaviour
     float minBeanScale = 0.1f;
     float maxBeanScale = 0.2f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        standbyQueue = new Queue<GameObject>(100);
+    float currentSpawnMultiplier = 1;
+    float armaggedonMultiplier = 2;
 
+    public static event Action OnStartArmaggedon;
+
+    // Start is called before the first frame update
+    void Awake()
+    {
+        if (standbyQueue == null)
+        {
+            standbyQueue = new Queue<GameObject>(100);
+        }
+        OnStartArmaggedon += StartArmaggedon;
     }
 
     public void StartSpawning()
@@ -39,13 +48,27 @@ public class BeanSpawner : MonoBehaviour
         StartCoroutine(AlternateSpawns());
     }
 
+    public void ArmaggedonEvent()
+    {
+        // so it can be called from a unity event
+        OnStartArmaggedon?.Invoke();
+    }
+
+    public void StartArmaggedon()
+    {
+        // Just make the trickle spawn stuff closer together
+        currentSpawnMultiplier = armaggedonMultiplier;
+        StopAllCoroutines();
+        StartCoroutine(AlternateSpawns());
+    }
+
     IEnumerator AlternateSpawns()
     {
         // burst
-        yield return StartCoroutine(SpawnBeansOverTime(GetRandom(minBurstSize, maxBurstSize), GetRandom(minBurstSpacing, maxBurstSpacing)));
+        yield return StartCoroutine(SpawnBeansOverTime(GetRandom(minBurstSize, (int)(maxBurstSize*currentSpawnMultiplier)), GetRandom(minBurstSpacing, maxBurstSpacing)));
 
         // trickle
-        yield return StartCoroutine(SpawnBeansOverTime(GetRandom(minTrickleSize, maxTrickleSize), GetRandom(minTrickleSpacing, maxTrickleSpacing)));
+        yield return StartCoroutine(SpawnBeansOverTime(GetRandom(minTrickleSize, maxTrickleSize), GetRandom(minTrickleSpacing/currentSpawnMultiplier, maxTrickleSpacing/currentSpawnMultiplier)));
 
         // repeat
         StartCoroutine(AlternateSpawns());
@@ -67,7 +90,7 @@ public class BeanSpawner : MonoBehaviour
         if (standbyQueue.Count == 0)
         {
             copy = Instantiate(beanPrefab, transform.position, transform.rotation, transform);
-            copy.transform.localScale = Vector3.one * Random.Range(minBeanScale, maxBeanScale);
+            copy.transform.localScale = Vector3.one * UnityEngine.Random.Range(minBeanScale, maxBeanScale);
         }
         else
         {
@@ -96,15 +119,15 @@ public class BeanSpawner : MonoBehaviour
     float GetRandom(float min, float max)
     {
         // gives a distibution like summing 2 dice
-        float r1 = Random.Range(min / 2, max / 2);
-        float r2 = Random.Range(min / 2, max / 2);
+        float r1 = UnityEngine.Random.Range(min / 2, max / 2);
+        float r2 = UnityEngine.Random.Range(min / 2, max / 2);
         return r1 + r2;
     }
 
     int GetRandom(int min, int max)
     {
-        int r1 = Random.Range(min / 2, max / 2);
-        int r2 = Random.Range(min / 2, max / 2);
+        int r1 = UnityEngine.Random.Range(min / 2, max / 2);
+        int r2 = UnityEngine.Random.Range(min / 2, max / 2);
         return r1 + r2;
     }
 }

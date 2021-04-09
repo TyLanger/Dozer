@@ -23,6 +23,10 @@ public class BeanCleanup : MonoBehaviour
         if(transform.position.y < bottomOfWorld)
         {
             EndPhysics();
+            if(OnLeaveWorld == null)
+            {
+                Destroy(gameObject); // for environment beans that have no spawner
+            }
             OnLeaveWorld?.Invoke(gameObject);
         }
     }

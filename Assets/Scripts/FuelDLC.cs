@@ -27,7 +27,7 @@ public class FuelDLC : DLCBlock
             // player.curse()
         }
 
-        player.Refuel(fuel);
+        //player.Refuel(fuel);
     }
 
     IEnumerator StartDraining()

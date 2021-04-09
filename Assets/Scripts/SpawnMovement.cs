@@ -10,12 +10,13 @@ public class SpawnMovement : MonoBehaviour
     bool startedMoving = false;
     public float speed = 1;
 
+    public UnityEvent startTriggerEvent;
     public UnityEvent endTriggerEvent;
 
     // Start is called before the first frame update
     void Start()
     {
-        MoveToPosition();
+        startTriggerEvent?.Invoke();
     }
 
     // Update is called once per frame
