@@ -32,6 +32,8 @@ public class Bulldozer : MonoBehaviour
     Quaternion rightStartRot;
     Vector3 cabOffset;
     Rigidbody cabBody;
+    public Transform spawnPoint;
+    bool useNewSpawn = false;
 
     float minParentScale = 0.3f;
     float maxParentScale = 0.6f;
@@ -128,6 +130,16 @@ public class Bulldozer : MonoBehaviour
         leftTread.isKinematic = false;
         rightTread.isKinematic = false;
 
+        if (useNewSpawn)
+        {
+            transform.position = spawnPoint.position;
+        }
+
+    }
+
+    public void SetNewSpawn()
+    {
+        useNewSpawn = true;
     }
 
     public void PayCost(int price)

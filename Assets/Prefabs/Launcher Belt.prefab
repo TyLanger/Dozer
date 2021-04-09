@@ -200,11 +200,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc4ca26dde7d7b6488144838a8d16a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 1
   leftEdge: {fileID: 0}
   rightEdge: {fileID: 0}
   xScroll: 0
-  yScroll: 1
+  yScroll: 0.5
 --- !u!54 &3274959085672224114
 Rigidbody:
   m_ObjectHideFlags: 0

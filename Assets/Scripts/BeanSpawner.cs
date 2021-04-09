@@ -32,6 +32,10 @@ public class BeanSpawner : MonoBehaviour
     {
         standbyQueue = new Queue<GameObject>(100);
 
+    }
+
+    public void StartSpawning()
+    {
         StartCoroutine(AlternateSpawns());
     }
 

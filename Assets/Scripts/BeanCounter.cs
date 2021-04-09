@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class BeanCounter : MonoBehaviour
 {
-    public int count;
+    
+    public static int count;
+    public int pointValue = 1; // putting beans in a specific spot gets a bonus
+
+    public GameObject beanText;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Bean")
         {
-            count++;
+            count += pointValue;
+            Instantiate(beanText, other.transform.position + Vector3.up*5, Quaternion.identity);
         }
     }
 }

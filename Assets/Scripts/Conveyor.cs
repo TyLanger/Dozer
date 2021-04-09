@@ -29,7 +29,7 @@ public class Conveyor : MonoBehaviour
             rbody.isKinematic = !rbody.isKinematic;
         }
 
-        myRenderer.material.mainTextureOffset = new Vector2(Time.time * xScroll, Time.time * yScroll);
+        myRenderer.material.mainTextureOffset = new Vector2(speed * Time.time * xScroll, speed * Time.time * yScroll);
 
     }
 

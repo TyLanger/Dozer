@@ -45,13 +45,13 @@ public class DLCBlock : MonoBehaviour
             {
                 // good
                 bought = true;
-                Debug.Log($"Paid front price for {gameObject.name}");
+                //Debug.Log($"Paid front price for {gameObject.name}");
                 Purchase(price);
             }
             else if(angle > 260 && angle < 280)
             {
                 bought = true;
-                Debug.Log($"Paid back price for {gameObject.name}");
+                //Debug.Log($"Paid back price for {gameObject.name}");
                 Purchase(backPrice);
             }
         }
