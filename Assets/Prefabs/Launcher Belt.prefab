@@ -154,7 +154,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 80b59dee9d48c014fa9e4cab6434deaa, type: 2}
+  - {fileID: 2100000, guid: 9055ac4d57fecb34391a3336f8fd260f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -203,6 +203,8 @@ MonoBehaviour:
   speed: 2
   leftEdge: {fileID: 0}
   rightEdge: {fileID: 0}
+  xScroll: 0
+  yScroll: 1
 --- !u!54 &3274959085672224114
 Rigidbody:
   m_ObjectHideFlags: 0

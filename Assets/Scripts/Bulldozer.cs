@@ -36,6 +36,11 @@ public class Bulldozer : MonoBehaviour
     float minParentScale = 0.3f;
     float maxParentScale = 0.6f;
 
+    public float currentFuelSeconds = 20; // is this working seconds or idle seconds? Working. Idle drains 0.1x fuel?
+    public float maxFuelSeconds = 60;
+    public float bigTankFuelSeconds = 120;
+    public float idleFuelConsumptionScale = 0.1f;
+
     int goldenBeans = 0;
 
     bool hornUnlocked = false;
@@ -97,6 +102,14 @@ public class Bulldozer : MonoBehaviour
         cabBody.MovePosition((leftTread.position + rightTread.position) / 2 + cabOffset);
         cabBody.MoveRotation(leftTread.rotation);
 
+        // if moving, lose fuel
+        currentFuelSeconds -= Mathf.Max(Mathf.Abs(forwardInput), Mathf.Abs(horInput)) * Time.fixedDeltaTime;
+        currentFuelSeconds -= idleFuelConsumptionScale * Time.fixedDeltaTime; // lose a little fuel anyway
+
+        if(currentFuelSeconds < 0)
+        {
+            // explode
+        }
     }
 
     private void Reset()
@@ -177,5 +190,10 @@ public class Bulldozer : MonoBehaviour
         {
             // sound and a shockwave in front of you
         }
+    }
+
+    public void Refuel(float fuel)
+    {
+        currentFuelSeconds = Mathf.Min(currentFuelSeconds + fuel, maxFuelSeconds);
     }
 }

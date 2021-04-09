@@ -10,9 +10,14 @@ public class Conveyor : MonoBehaviour
     public Transform leftEdge;
     public Transform rightEdge;
 
+    Renderer myRenderer;
+    public float xScroll;
+    public float yScroll = 1;
+
     // Start is called before the first frame update
     void Start()
     {
+        myRenderer = GetComponent<Renderer>();
         rbody = GetComponent<Rigidbody>();
     }
 
@@ -23,6 +28,9 @@ public class Conveyor : MonoBehaviour
             // turn off the conveyor so you can push it
             rbody.isKinematic = !rbody.isKinematic;
         }
+
+        myRenderer.material.mainTextureOffset = new Vector2(Time.time * xScroll, Time.time * yScroll);
+
     }
 
     void FixedUpdate()
