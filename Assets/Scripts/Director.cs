@@ -19,6 +19,7 @@ public class Director : MonoBehaviour
     public TextMeshProUGUI introText;
     public Image blockerImage;
     public Image logo;
+    public TextMeshProUGUI beanCounter;
 
     public CameraController cameraScript;
 
@@ -41,10 +42,14 @@ public class Director : MonoBehaviour
     {
         beansPushedOff += points;
 
-        if ((nextEventIndex < eventBeanThresholds.Length) && (beansPushedOff >= eventBeanThresholds[nextEventIndex]))
+        if (nextEventIndex < eventBeanThresholds.Length)
         {
-            events[nextEventIndex]?.Invoke();
-            nextEventIndex++;
+            beanCounter.text = $"{beansPushedOff}/{eventBeanThresholds[nextEventIndex]} Beans Pushed";
+            if ((beansPushedOff >= eventBeanThresholds[nextEventIndex]))
+            {
+                events[nextEventIndex]?.Invoke();
+                nextEventIndex++;
+            }
         }
     }
 
