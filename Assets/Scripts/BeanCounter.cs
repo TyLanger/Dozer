@@ -17,7 +17,7 @@ public class BeanCounter : MonoBehaviour
 
     Transform cameraTrans;
 
-    static Queue<TextController> standbyQueue;
+    Queue<TextController> standbyQueue;
 
     public static event Action<int> OnBeanCounted;
 
