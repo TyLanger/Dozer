@@ -13,14 +13,32 @@ public class BeanCounter : MonoBehaviour
     public GameObject tutorialIslandText;
     public GameObject dozerText;
 
+    float timeLastSpawned = 0;
+
+    static Queue<GameObject> standbyQueue;
+
     public static event Action<int> OnBeanCounted;
+
+    private void Awake()
+    {
+        /*
+        if (standbyQueue == null)
+        {
+            standbyQueue = new Queue<GameObject>(10);
+        }
+        */
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Bean")
         {
             count += pointValue;
-            Instantiate(beanText, other.transform.position + Vector3.up*5, Quaternion.identity);
+            if (Time.time > timeLastSpawned + 1)
+            {
+                timeLastSpawned = Time.time;
+                Instantiate(beanText, other.transform.position + Vector3.up*5, Quaternion.identity);
+            }
             OnBeanCounted?.Invoke(pointValue);
         }
         else if(other.tag == "TutorialIsland")
