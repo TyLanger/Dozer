@@ -128,6 +128,14 @@ public class Bulldozer : MonoBehaviour
         leftTread.isKinematic = true;
         rightTread.isKinematic = true;
 
+        leftTread.velocity = Vector3.zero;
+        leftTread.angularVelocity = Vector3.zero;
+        rightTread.velocity = Vector3.zero;
+        rightTread.angularVelocity = Vector3.zero;
+        Rigidbody rbody = GetComponent<Rigidbody>();
+        rbody.velocity = Vector3.zero;
+        rbody.angularVelocity = Vector3.zero;
+
         leftTread.position = (leftStartPos);
         rightTread.position = (rightStartPos);
         leftTread.rotation = (leftStartRot);

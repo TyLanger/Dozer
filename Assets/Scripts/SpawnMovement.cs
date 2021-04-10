@@ -42,4 +42,9 @@ public class SpawnMovement : MonoBehaviour
     {
         startedMoving = true;
     }
+
+    public void SetMoveOnVisible()
+    {
+        Director.OnGameVisible += MoveToPosition;
+    }
 }

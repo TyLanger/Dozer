@@ -11,6 +11,7 @@ public class BeanCounter : MonoBehaviour
 
     public GameObject beanText;
     public GameObject tutorialIslandText;
+    public GameObject dozerText;
 
     public static event Action<int> OnBeanCounted;
 
@@ -25,6 +26,10 @@ public class BeanCounter : MonoBehaviour
         else if(other.tag == "TutorialIsland")
         {
             Instantiate(tutorialIslandText, other.transform.position + Vector3.up * 5, Quaternion.identity);
+        }
+        else if(other.tag == "Dozer")
+        {
+            Instantiate(dozerText, other.transform.position + Vector3.up * 5, Quaternion.identity);
         }
     }
 }
